@@ -1,0 +1,381 @@
+<<!DOCTYPE html>
+<html>
+<head>
+
+
+	<base href="index.html" target="_blank">
+	<meta charset=utf-8 />
+	<title id="title">SiebelcoSites</title>
+	<meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+  <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+  integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+  crossorigin=""/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/1.3.4/chroma.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>      <!-- updated 10/13/2022 -->
+
+
+	<!-- #use the css and js files from pyscript.net -->
+<!--<script defer src="https://pyscript.net/alpha/pyscript.js"></script>-->
+
+
+
+<!-- Nice background-color from sonny rollins website : #3c3b4a -->
+	<style>
+
+
+	html {
+		box-sizing: border-box;
+	}
+		body {
+			margin: 0;
+			padding: 0;
+			background: #3c3b4a;
+			font-family: "Noto Sans", sans-serif;
+			color: #3d3d3d;
+		}
+
+		#map {
+			display: flex;
+			/* //top: 0; */
+			bottom: 0px;
+			width: 100%;
+      height: 90%;
+		}
+		#showPoints {
+			right: 8px;
+		}
+		#tables {
+			right: 100px;
+
+		}
+
+		/* .buttons {
+			top: 0px;
+			background-color: #fffff2;
+			font-size: 11px;
+			position: absolute;
+			display: inline-flex;
+			z-index: 800;
+		} */
+
+		#tablesCollapse {
+			z-index: 900;
+		}
+
+
+	</style>
+</head>
+
+<body>
+<!--
+ 	NavBar (Title, dropTableButton, DownloadButton)
+	dropTable (hidden/toggle)
+	Map (leaflet)
+	onMapClick > addPoint {updates: dropTable, map, downloadCSVFile, sessionStorage}
+
+	!! Need to update the drop table and the map points from the session storage.
+	!! the innerHTML handlers are too finicky
+
+-->
+<!-- start nav bar -->
+<nav id="navBar" class="navbar navbar-light" style="background-color: #e3e2fe">
+		<a class="navbar-brand h1" href="#" style="text-align:right"> SiebelcoSites </a>
+		<!-- <div class='buttons' id='showPoints'><button onClick='cameraTables()'>Camera Table</button></div>
+		<div class='buttons' id='tables'><input type=button onClick="toTables()" value='View Points'></div>
+		<div class='buttons' id='directTables'><form action='/tables.html'><input type="submit"  value='Famous'></form></div> -->
+
+
+			<div class='btn-group' role='group' aria-label='options'>
+				<button  class="btn btn-primary btn-sm" type="button" onclick="updateTable()">DEVSAVEPERSISTENTPOINTS</button>
+				<button  class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#cameraCollapse" aria-expanded="false" aria-controls="cameraCollapse">Show points</button>
+				<button class="btn btn-primary btn-sm" type="button" onclick="downloadData()">Download CSV</button>
+				<button class='btn btn-danger btn-sm' type='button' onclick='sessionStorage.clear()'>Clear Session </button>
+			</div>
+</nav>
+<!-- end nav bar, includes title and buttons -->
+	<!-- start table header -->
+	<div class="tablesCollapse">
+	<div class="row">
+		<div class="col">
+			<div class="collapse multi-collpase" id="cameraCollapse">
+				<div class="card card-body">
+					<div class="row">
+						<div class="col-sm">
+							<b> Name </b>
+						</div>
+						<div class="col-sm">
+						<b>	Latitude, Longitude </b>
+
+						</div>
+						<div class="col-sm">
+						<b>	Description </b>
+						</div>
+					</div>
+					<!-- end table header -->
+					<!-- Start session points in drop down table -->
+					<div id='insertTheText'> </div>
+		</div>
+		</div>
+	</div>
+</div>
+</div>
+
+
+<div id='map'></div>
+
+
+
+<script id="mainScript">
+
+
+//!!!!!!!!!SETUP!!!!!!!!
+var options = {
+	center: [35.923124, -82.078514],
+	zoom: 12,
+	closePopupOnClick: true,
+};
+	const dropTables = [];
+	const pointsTable = [];
+	const csvTables = [];
+	csvTables.push(' ,Name,Lat,Lng,Description\n'); //extra commma before name because it aligns to the bad output
+	var map = L.map('map', options);
+
+// Esri Basemap has more zoom
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+}).addTo(map);
+// var USGS_USImageryTopo = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
+// 	maxZoom: 20,
+// 	attribution: 'Tiles courtesy of the <a href="https://usgs.gov/">U.S. Geological Survey</a>'
+// }).addTo(map);
+map.createPane('CountyBoundaries');
+const crossIcon = L.divIcon({
+	html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="#FF0000" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>',
+	iconSize: [20, 20],
+	className: 'pendingMarker',
+});
+
+// start layers
+
+
+
+var ncCountyShape = new L.GeoJSON.AJAX('assets/NCDOT_County_Boundaries_Spat.geojson',{
+                 attribution: 'Map: River Pyle,</br> Layers: <a href="https://www.nconemap.gov/datasets/9728285994804c8b9f20ce58bae45899_0/explore?location=35.119934%2C-79.919073%2C7.27"> NC OneMap County Boundaries</a> <a href="https://data-ncdenr.opendata.arcgis.com/datasets/nc-mining-permits/about">|  NCDEQ Mining Permits </a>',
+                 pane: 'CountyBoundaries',
+                 fillOpacity: 0.001,
+                 opacity: .2,
+                 dashArray:'4',
+               }).addTo(map);
+
+
+
+ // Sibelco Crystal layers
+var CrystalDrive = L.marker([35.89775,-82.06115], {icon: crossIcon}).addTo(map);
+CrystalDrive.bindTooltip('<div class="row"><div class="col-sm">CrystalDrive</div><div class="col-sm">35.89775, -82.06115</div><div class="col-sm"></div></div>').addTo(map);
+var SibelcoSchoolhouse = L.marker([35.94604,-82.00083], {icon: crossIcon}).addTo(map);
+SibelcoSchoolhouse.bindTooltip('<div class="row"><div class="col-sm">SibelcoSchoolhouse</div><div class="col-sm">35.94604, -82.00083</div><div class="col-sm"></div></div>').addTo(map);
+
+// BUTTON POINTS ADDITION FUNCTIONS
+// csv download
+function downloadData() {
+
+	 console.log(csvTables);
+	 var hidden = document.createElement('a');
+	 hidden.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvTables);
+	 hidden.target = '_blank';
+	 hidden.download = 'cameras.csv';
+	 hidden.click();
+};
+
+
+
+// START User Input popup handling
+// starts whenever the user presses enter
+function enterPoint(lat , lng){
+
+	let nameInput = document.getElementById('camName').value;
+	let userDesc = document.getElementById('userDesc').value;
+	// console.log(lat + lng);
+
+	// NOT void condition
+	if (nameInput !== ''){
+
+		//create the drop down table format to view in picture ; 1/14/2023; changing behavior of csv downlaod and page format
+		var dropTable = '<div class="row"><div class="col-sm">' + nameInput + '</div>' + '<div class="col-sm">' + lat + ', ' + lng + '</div><div class="col-sm">'+ userDesc + '</div></div>';
+		document.getElementById('insertTheText').innerHTML += dropTable;
+
+		// update download link
+		csvTables.push(nameInput +  ',' + lat + ',' + lng + ',' + userDesc + '\n');
+
+		// create tooltip addition format. !How do i save to index.html?!
+		var devAdd = 'var ' + nameInput.replace(' ','') + ' = L.marker(['+lat+','+lng+'], {icon: cameraIcon}).addTo(map);'
+		var devAddToolTip = nameInput.replace(' ' , '') + ".bindTooltip('" + dropTable + "').addTo(map);";
+		// document.getElementById('extraScript').innerHTML += devAdd;
+		// document.getElementById('extraScript').innerHTML += devAddToolTip;
+		document.getElementById('extraScript').insertAdjacentHTML('beforeend',devAdd);
+		document.getElementById('extraScript').insertAdjacentHTML('beforeend',devAddToolTip);
+		// inserAdjacentHTML resolve htmlscriptobject issues and doesnt need a toString()
+		console.log("Trying to get sessionStorage to work...");
+		sessionStorage.setItem(nameInput,devAdd); // adds point to sessionStorage
+		sessionStorage.setItem(nameInput + "_Tooltip", devAddToolTip);
+
+		let data = sessionStorage.getItem("key");
+		console.log(data);
+
+
+
+		//innnerHTML doesnt update and adds everything as a scriptHTMLElement
+		// document.getElementById('extraScript').innerHTML = document.getElementById('extraScript') + devAdd + '</br>' + devAddToolTip;
+		// document.getElementById('extraScript').innerHTML += devAddToolTip;
+
+		// rework
+		console.log('Raw Marker Vars START <--');
+		console.log(devAdd);
+		console.log(devAddToolTip);
+		console.log('-->')
+
+		//cleanup
+		map.closePopup();
+		map.setZoom(15);
+	} else if (nameInput === ""){ // IS void name/desc entry, autofill ordered numeric
+		//blank nanme condition
+		let nameInput = "Undefined";
+		let text = '|Name: Undefined \t|Coordinates:\t' + lat +', ' +  lng + '|\n\n';
+		var table = '<tr><td>Undefined</td><td>' + lat + ', ' + lng + '</td><td><i opacity=".8">Description</i></td></tr>';
+
+		//dropTable is used, add new Points to table
+		var dropTable = '<div class="row"><div class="col-sm"><i opacity=".8">Undefined</i></div>' + '<div class="col-sm">' + lat + ', ' + lng + '</div><div class="col-sm"><i opacity=".8">Description</i></div></div>';
+		document.getElementById('insertTheText').innerHTML += dropTable;
+
+		//download handling
+		csvTables.push('undefined,' + lat + ',' + lng + ',' + 'description' + '\n');
+		var devAdd = 'var ' + nameInput + ' = L.marker(['+lat+','+lng+'], {icon: cameraIcon}).addTo(map);'
+		var devAddToolTip = nameInput + '.bindTooltip("'  + dropTable  + '");';
+		// document.getElementById('extraScript').innerHTML += devAdd;
+		// document.getElementById('extraScript').innerHTML += devAddToolTip;
+		document.getElementById('extraScript').insertAdjacentHTML('beforeend',devAdd);
+		document.getElementById('extraScript').insertAdjacentHTML('beforeend',devAddToolTip);
+		sessionStorage.setItem("UndefinedMarker",devAdd);
+		let data = sessionStorage.getItem("sessionStorageMarker");
+		console.log(data);
+		console.log(devAdd.toString);
+		console.log(devAddToolTip);
+		map.closePopup();
+		map.setZoom(15);
+	};
+	//remove temp tempMarker 2.2 seconds after user presses Enter
+	//need to replace with camera icon and details
+	var m = 2200;
+	setTimeout(function(){
+		pendingMarker.unbindPopup();
+		map.removeLayer(pendingMarker);
+			},m);
+
+	console.log('InputPopupClosed');
+
+};
+// end user input popup
+
+// double click event handling; creates the popup, gets the coords, makes the marker
+function onDoubleClick(e){
+	console.log('DoubleClick Detected!');
+	// map.removeLayer(pendingMarker);
+	var coordinateString = e.latlng.toString().replace('LatLng(','').replace(')','' );
+	// '</br></br>Add point feature? </br></br> <button id="yes" onClick="addCircle()">Yes</button> &nbsp <button onClick="map.closePopup()">No</button></br></br><textarea id="name">  </textarea>'
+	var lat = e.latlng.lat.toFixed(5) ;
+	var lng = e.latlng.lng.toFixed(5) ;
+	var coordinates = lat.toString + lng.toString;
+	// console.log(lat + lng);
+	//create dblClck marker
+	let inputPopup = new L.popup()
+				.setLatLng(e.latlng)
+				.setContent('<input padding="10px", type="text" id="camName" placeholder="Name"></input>&nbsp&nbsp&nbsp&nbsp&nbsp<button id="enter", onClick="enterPoint(' + lat + ',' + lng + ')">Enter</button><br>' + 'Lat/Lng:&nbsp&nbsp&nbsp' +  coordinateString + '<br><input padding="10px", type="text" id="userDesc" placeholder="Description"></input>')
+				.addTo(map);
+
+	pendingMarker = new L.marker([e.latlng.lat,e.latlng.lng],{icon: crossIcon})
+		.bindPopup(inputPopup)
+		.addTo(map);
+
+	// removes temp marker when new one is opened or the popup closes
+	// !! didn't work with timeout, first addition would stay persistent with the input popup
+	console.log(inputPopup.isPopupOpen());
+	map.on('popupclose', function(){
+			map.removeLayer(pendingMarker)
+		});
+
+
+
+};
+
+
+
+
+// assigned to button 1/28/2023 >> assigned to sessionRefreshLoad 1.0.3
+function updateMarkers(){
+	let keys = Object.keys(sessionStorage);
+	var extraScript = document.getElementById('extraScript'); // trying to access the main script tags to avoid undefined error
+	for(let key of keys) {
+		let tM = `${key}: ${sessionStorage.getItem(key)}`;
+		let value = tM.split(':')[1];
+
+		extraScript.append(sessionStorage.getItem(key)); // working
+		console.log(sessionStorage.getItem(key)); // each key is tooltip script
+
+		// document.getElementById('mainScript').insertAdjacentElement('beforeend', sessionStorage.getItem(key));
+	}; //END FOR LOOP
+
+};
+
+function updateTable(){
+	// access dropDownTable > insertHeader > insert Name > insert Lat,lng > insert description
+	let keys = Object.keys(sessionStorage);
+	for(let key of keys) {
+		let tM = `${key}: ${sessionStorage.getItem(key)}`;
+		let name = tM.split(':')[0];
+		if(name.includes('Tooltip') == true){
+			// console.log(tM.split("'")[1]);
+			document.getElementById('insertTheText').innerHTML += tM.split("'")[1];
+				};
+			};
+			updateMarkers();
+};
+var m = 1000;
+setTimeout(updateTable, m);
+// LOAD PERSISTENT POINTS ON REFRESH
+
+
+
+
+// PRIMARY CLICK HANDLER
+map.on('dblclick',  onDoubleClick);
+
+
+map.getPane('CountyBoundaries').style.zIndex = 307;
+
+
+</script>
+
+<script type=text/javascript id="extraScript">
+</script>
+
+</body>
+
+</html>
