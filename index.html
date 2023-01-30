@@ -16,11 +16,13 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
   integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
   crossorigin=""/>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+<!-- Old bootstrap, depreciated -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   <!-- Make sure you put this AFTER Leaflet's CSS -->
   <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
     integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
@@ -32,17 +34,36 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>      <!-- updated 10/13/2022 -->
 
 
-	<!-- #use the css and js files from pyscript.net -->
-<!--<script defer src="https://pyscript.net/alpha/pyscript.js"></script>-->
 
+<!-- /
+*****************************************************
+***************** The ****************~~~~~~~~~~*****
+************** Sibelco **************| ` .`  - |*****
+************ Corperation ****************************
+*************** may *********************************
+************** pollute ******************************
+**************** the ********************************
+**************** north ******************************
+**************** toe ********************************
+*************** River *******************************
+*********!!!! WaterLevelMedium Investigates!!! ******
+*****************************************************
+*****************************************************
 
-
+-->
 <!-- Nice background-color from sonny rollins website : #3c3b4a -->
 	<style>
 
-
+  head {
+    height: 0;
+  }
 	html {
 		box-sizing: border-box;
+    margin: 0px;
+    padding 0;
+    width: 100%;
+    line-height:0;
+
 	}
 		body {
 			margin: 0;
@@ -50,6 +71,7 @@
 			background: #3c3b4a;
 			font-family: "Noto Sans", sans-serif;
 			color: #3d3d3d;
+      line-height: 0;
 		}
 
 		#map {
@@ -58,6 +80,7 @@
 			bottom: 0px;
 			width: 100%;
       height: 90%;
+      z-index: 900;
 		}
 		#showPoints {
 			right: 8px;
@@ -65,50 +88,109 @@
 		#tables {
 			right: 100px;
 
-		}
+    }
 
-		/* .buttons {
-			top: 0px;
-			background-color: #fffff2;
-			font-size: 11px;
-			position: absolute;
-			display: inline-flex;
-			z-index: 800;
-		} */
 
+    .navBar {
+
+    }
 		#tablesCollapse {
 			z-index: 900;
 		}
-
+    /* .dropdown {
+      padding:2px,
+      float: right;
+    } */
 
 	</style>
 </head>
-
 <body>
-<!--
- 	NavBar (Title, dropTableButton, DownloadButton)
-	dropTable (hidden/toggle)
-	Map (leaflet)
-	onMapClick > addPoint {updates: dropTable, map, downloadCSVFile, sessionStorage}
-
-	!! Need to update the drop table and the map points from the session storage.
-	!! the innerHTML handlers are too finicky
-
--->
 <!-- start nav bar -->
-<nav id="navBar" class="navbar navbar-light" style="background-color: #e3e2fe">
-		<a class="navbar-brand h1" href="#" style="text-align:right"> SiebelcoSites </a>
-		<!-- <div class='buttons' id='showPoints'><button onClick='cameraTables()'>Camera Table</button></div>
-		<div class='buttons' id='tables'><input type=button onClick="toTables()" value='View Points'></div>
-		<div class='buttons' id='directTables'><form action='/tables.html'><input type="submit"  value='Famous'></form></div> -->
+<!-- Remember working in Bootstrap 4 not 5  -->
+<!-- <span class="border border-primary"></span>
 
-
+<nav id="navBar" class="navbar navbar-dark" style="background-color: #010B13">
+		<a class="navbar-brand mg-sm-1" href="#" style="text-align:right">Is Siebelco North America an enviornmental hazard?</a>
 			<div class='btn-group' role='group' aria-label='options'>
-				<button  class="btn btn-primary btn-sm" type="button" onclick="updateTable()">DEVSAVEPERSISTENTPOINTS</button>
+        <div class='dropdown'>
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sibelco SchoolHouse Layers
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <button  class="btn btn-primary btn-sm" type="button" onclick="toggleLayer(SchoolHouseSSURGO)">SSURGO DB</button>
+          <a class="dropdown-item" href="#">Another action</a>
+          <button  class="btn btn-primary btn-sm" type="button" onclick="updateTable()">Impervious Surfaces</button>
+        </div>
+      </div>
+
+      <!-- Peristent Buttons, i.e., NOT in dropdown menu constant visibility -->
+        <!-- <button  class="btn btn-primary btn-sm" type="button" onclick="floodFreq_Cr()">DEVSAVEPERSISTENTPOINTS</button>
 				<button  class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#cameraCollapse" aria-expanded="false" aria-controls="cameraCollapse">Show points</button>
-				<button class="btn btn-primary btn-sm" type="button" onclick="downloadData()">Download CSV</button>
+        <button class="btn btn-primary btn-sm" type="button" onclick="downloadData()">Download CSV</button>
 				<button class='btn btn-danger btn-sm' type='button' onclick='sessionStorage.clear()'>Clear Session </button>
-			</div>
+
+        <!-- Start Sieblco Crystal Drive Facility Dropdown -->
+        <!-- <div class='dropdown'>
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="crystalDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sibelco Crystal Dr. Layers
+        </button>
+        <div class="dropdown-menu" aria-labelledby="crystalDropdownButton">
+          <a class="dropdown-item" href="#">Flood Frequency Overlay</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </div>
+  </div>
+</nav> -->
+
+<nav class="navbar navbar-dark sticky-top " style="background-color: #1c66a6 ">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Sibelco N.A. Environmental Assesment</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+      <span class="navbar-text">Layer Options</span>
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Sibelco Facilities</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/schoolHouse.html">SchoolHouse</a>
+            <!-- https://www.sibelco.com/sites/schoolhouse -->
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu">
+              <!-- <style> .dropdown-item {
+                padding: 10px 10px 10px 10px;
+                } </style> -->
+              <li><a class="dropdown-item" href="#">Action</a></li>
+                <hr class="dropdown-divider">
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex mt-3" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </nav>
 <!-- end nav bar, includes title and buttons -->
 	<!-- start table header -->
@@ -146,7 +228,8 @@
 <script id="mainScript">
 
 
-//!!!!!!!!!SETUP!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!! SETUP !!!!!!!!
+
 var options = {
 	center: [35.923124, -82.078514],
 	zoom: 12,
@@ -167,33 +250,170 @@ var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest
 // 	attribution: 'Tiles courtesy of the <a href="https://usgs.gov/">U.S. Geological Survey</a>'
 // }).addTo(map);
 map.createPane('CountyBoundaries');
+
 const crossIcon = L.divIcon({
 	html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="#FF0000" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>',
 	iconSize: [20, 20],
 	className: 'pendingMarker',
 });
+const xIcon = L.divIcon({
+html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path weight: 2px fill-opacity=".8" fill="#0000FF" d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"/></svg>',
+iconSize: [15, 12] ,
+className: 'xIcon',
+});
 
-// start layers
 
 
+// !!!!!!!!!!!!!!!!!!!!! LAYERS !!!!!!!!!!!!!!!!!!!!
 
 var ncCountyShape = new L.GeoJSON.AJAX('assets/NCDOT_County_Boundaries_Spat.geojson',{
                  attribution: 'Map: River Pyle,</br> Layers: <a href="https://www.nconemap.gov/datasets/9728285994804c8b9f20ce58bae45899_0/explore?location=35.119934%2C-79.919073%2C7.27"> NC OneMap County Boundaries</a> <a href="https://data-ncdenr.opendata.arcgis.com/datasets/nc-mining-permits/about">|  NCDEQ Mining Permits </a>',
                  pane: 'CountyBoundaries',
                  fillOpacity: 0.001,
-                 opacity: .2,
-                 dashArray:'4',
+                 opacity: 1,
+                 color: '#000000',
                }).addTo(map);
 
-
+// Sibelco Primary layers
+// doesnt exist rn
+var WQ_Points_Primary = new L.GeoJSON.AJAX('assets/WQ_Points.geojson',{
+  onEachFeature: function popUp(f,l){
+       var out = [];
+       if (f.properties){
+           for(key in f.properties){
+               out.push(key+": "+f.properties[key]);
+           }
+           l.bindPopup(out.join("<br />"));
+       }
+   }, //
+  pointToLayer: function(feature, latlng){
+    return L.marker(latlng,{icon: xIcon, color: 'red'});
+  },
+}).addTo(map);
 
  // Sibelco Crystal layers
 var CrystalDrive = L.marker([35.89775,-82.06115], {icon: crossIcon}).addTo(map);
-CrystalDrive.bindTooltip('<div class="row"><div class="col-sm">CrystalDrive</div><div class="col-sm">35.89775, -82.06115</div><div class="col-sm"></div></div>').addTo(map);
-var SibelcoSchoolhouse = L.marker([35.94604,-82.00083], {icon: crossIcon}).addTo(map);
-SibelcoSchoolhouse.bindTooltip('<div class="row"><div class="col-sm">SibelcoSchoolhouse</div><div class="col-sm">35.94604, -82.00083</div><div class="col-sm"></div></div>').addTo(map);
+var crystalPopupText = `
+  <div class="row">
+    <div class="col-sm">CrystalDrive Facility</div>
+    <div class="col-sm">35.89775, -82.06115</div>
+    <div class="col-sm"><a href="https://www.sibelco.com/sites/crystal">Site Company <br> Webpage</a></div>
+    <div class="col-sm"><a href="` + googMapsLink(CrystalDrive.getLatLng())  + `">Google Maps</a></div>
 
-// BUTTON POINTS ADDITION FUNCTIONS
+  </div>
+`;
+CrystalDrive.bindPopup(crystalPopupText).addTo(map);
+
+
+
+
+// monitoring wells in historical ea
+var crystal_MW_Points = new L.GeoJSON.AJAX('assets/Crystal_MW.geojson',{
+  onEachFeature: function popUp(f,l){
+       var out = [];
+       if (f.properties){
+           for(key in f.properties){
+               out.push(key+": "+f.properties[key]);
+           }
+           l.bindPopup(out.join("<br />"));
+       }
+   }, //
+  pointToLayer: function(feature, latlng){
+    return L.marker(latlng,{icon: xIcon, color: 'red'});
+  },
+}).addTo(map);
+
+
+var Crystal_SSURGO = new L.GeoJSON.AJAX('assets/Crystal_SSURGO.geosjon',{
+
+})
+
+
+
+
+
+
+// Sibelco Schoolhouse Layers
+var SibelcoSchoolhouse = L.marker([35.94604,-82.00083], {icon: crossIcon}).addTo(map);
+let schoolhouseTooltipText =  `
+  <div class="row align-items-start">
+    <div class="col-sm">Schoolhouse Facility</div>
+    <div class="col-sm">35.94604, -82.00083</div>
+    <div class="col-sm"><a href="https://www.sibelco.com/sites/schoolhouse">Company Webpage</a></div>
+    <div class="col-sm"><a href="` + googMapsLink(SibelcoSchoolhouse.getLatLng())  + `">Google Maps</a></div>
+  </div>`;
+SibelcoSchoolhouse.bindPopup(schoolhouseTooltipText,{direction: 'center'}).addTo(map);
+
+
+
+// make color scale
+var redColors = chroma.scale(['white','blue']).colors(5);
+var correctedReds = chroma.scale(['black','red','yellow','white'])
+    .correctLightness();
+// return
+function floodFreqColorScale(val){
+  var id = 0;
+  if (val == 'Rare'){id = 2}
+  else if(val == 'Frequent'){id =4}
+  else if(val == 'Occasional'){id = 3}
+  else if(val == 'None'){id = 1}
+  return redColors[id];
+};
+
+function CrystalFloodFreq_Style(feature){
+  return {
+        fillColor: floodFreqColorScale(feature.properties.flodfreqdcd),
+         fillOpacity: 0.6,
+         weight: 2,
+         opacity: .5,
+         color: '#b4b4b4',
+         dashArray: '2'
+  };
+};
+
+
+
+var SchoolHouseSSURGO = new L.GeoJSON.AJAX('assets/SibelcoSchoolhouse_SSURGO.geojson', {
+  onEachFeature: function popUp(feature, layer){
+      // show polygon group type
+      layer.bindTooltip(feature.properties.muname)
+        // popup with whole ssurgo table
+       var out = [];
+       if (feature.properties){
+           for(key in feature.properties){
+               out.push(key+": "+feature.properties[key]);
+           }
+           layer.bindPopup(out.join("<br />"),{autoPan: false});
+       }
+
+   }, //
+  fillOpacity: 0.2,
+  opacity: .2,
+  dashArray:'4',
+  color: 'red',
+  style: CrystalFloodFreq_Style,
+}).addTo(map);
+
+
+
+
+
+// !!!!!!!!!!!!!!!!!! BEHAVIOR FUNCTIONS !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// google maps link from lat lng !! Still adds a paraenthethese on the end but its fine
+function googMapsLink(latlng){
+  return "https://www.google.com/maps/place/" + latlng.toString().slice(7)
+};
+
+function toggleLayer(layer){
+  if(!toggle){
+    map.removeLayer(layer);
+  } else {
+    map.addLayer(layer)
+  }
+  toggle = !toggle;
+};
+
 // csv download
 function downloadData() {
 
@@ -213,7 +433,6 @@ function enterPoint(lat , lng){
 
 	let nameInput = document.getElementById('camName').value;
 	let userDesc = document.getElementById('userDesc').value;
-	// console.log(lat + lng);
 
 	// NOT void condition
 	if (nameInput !== ''){
@@ -239,12 +458,6 @@ function enterPoint(lat , lng){
 
 		let data = sessionStorage.getItem("key");
 		console.log(data);
-
-
-
-		//innnerHTML doesnt update and adds everything as a scriptHTMLElement
-		// document.getElementById('extraScript').innerHTML = document.getElementById('extraScript') + devAdd + '</br>' + devAddToolTip;
-		// document.getElementById('extraScript').innerHTML += devAddToolTip;
 
 		// rework
 		console.log('Raw Marker Vars START <--');
@@ -365,8 +578,8 @@ setTimeout(updateTable, m);
 
 
 // PRIMARY CLICK HANDLER
-map.on('dblclick',  onDoubleClick);
-
+// map.on('dblclick',  onDoubleClick);
+// disbaled as it interferes with popup behavrior for point layers
 
 map.getPane('CountyBoundaries').style.zIndex = 307;
 
