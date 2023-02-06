@@ -6,6 +6,8 @@ _____
 *All notable changes to this project will be documented in this file.*
 
 ## [Unreleased]
+
+
 ## [0.1.0] - 2023-02-03
 ### Added
 - SSURGO flood max layers for the primary site
@@ -15,7 +17,7 @@ _____
 ### Fixed
 - Projection issues with the primary_SSURGO layer. Did not transform to WGS84 during export from QGIS.
 - Sidebar checkbox toggle behavior. Checkboxes still have state issues, i.e., 'checked' or not. Will fix after all pertinent layers are uploaded as the user can visually tell if the layer is present or not
-- Created helper function to bypass map.panTo(layer.getLat... too finicky writing each one out. Try Catch block allows both polygon geojson layers and markers. 
+- Created helper function to bypass map.panTo(layer.getLat... too finicky writing each one out. Try Catch block allows both polygon geojson layers and markers.
 
 ### Removed
 - Search bar at the Bottom. Have nothing to query.

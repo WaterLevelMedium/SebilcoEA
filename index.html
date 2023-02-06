@@ -110,6 +110,12 @@ crossorigin=""/>
 		#tablesCollapse {
 			z-index: 900;
 		}
+		.offcanvas-body {
+			background: #9d8625;
+		}
+		.offcanvas-header {
+			background: #9d8625;
+		}
     /* .dropdown {
       padding:2px,
       float: right;
@@ -122,7 +128,7 @@ crossorigin=""/>
 <!-- start nav bar REMOVED 0.0.2 -->
 <!-- Remember working in Bootstrap 4 not 5  -->
 <!-- <span class="border border-primary"></span>
-
+  - 2023-02-04 Scrapped this way back cause I wrote the navbar in bootstrap 4.0.0 and has significant differences in classnames that got convoluted
 <nav id="navBar" class="navbar navbar-dark" style="background-color: #010B13">
 		<a class="navbar-brand mg-sm-1" href="#" style="text-align:right">Is Siebelco North America an enviornmental hazard?</a>
 			<div class='btn-group' role='group' aria-label='options'>
@@ -156,6 +162,30 @@ crossorigin=""/>
       </div>
   </div>
 </nav> -->
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!! Notes on toggle button formats !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+1} Below is the bootstrap 5.3.0 sytax for the default checkbox.
+<li>
+	<div class="input-group mb-3">
+			<div class="input-group-text">
+				<input class="form-check-input mt-0 " type="checkbox" value="" aria-label="Checkbox for following text input"  onchange="toggleLayer(SchoolHouse_SSURGO_FloodFreq)">
+				<strong style="padding: 10 0 0 10"> Flood Frequency - <i>Dominant Condition </i></strong>
+			</div>
+	</div>
+</li> -->
+<!--
+2} Below is what I was using before. Both have issues wherein the checkbox will not default to check
+<li>
+	<input class="form-check-input mt-0" id="schoolhouse_floodfreq_checkbox" type="checkbox" value="" onchange="toggleLayer(SchoolHouse_SSURGO_FloodFreq)" aria-label="Checkbox for following text input" checked>
+	<label class="form-check-label" for="schoolhouse_floodfreq_checkbox"> Flood Frequency - <i>Dominant Condition </i></label>
+</li>
+ -->
+<!--
+!!!!!!!!!!!!!!!!!!!!! END NOTES ON TOGGLE BUTTONS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-->
+
+
+
 
 <nav class="navbar navbar-dark sticky-top " style="background-color: #1c66a6 ">
   <div class="container-fluid">
@@ -164,19 +194,42 @@ crossorigin=""/>
         <span class="navbar-text">Spruce Pine, NC</span>
     </div>
 
+
         <button class="navbar-toggler ml-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-          <span class="navbar-text">Layer Options</span>
+          <span class="navbar-text">Toggle Layers</span>
           <span class="navbar-toggler-icon"></span>
         </button>
+				 <!-- !!!!!!!!!!!!!TABS WITH DROPDOWNS - WORKING ON 2023-02-04!!!!!!!!!!!!!!!!!!!!!! -->
+				 <!-- ##########################UNRELEASED NOT WORKING YET.##################################!! -->
+				<!-- <ul class="nav nav-pills" style="text-decoration-color:'black'">
+				  <li class="nav-item">
+				    <a class="nav-link active" aria-current="page" href="#">Active</a>
+				  </li>
+				  <li class="nav-item dropdown">
+				    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">SchoolHouse Layers</a>
+						<ul class="dropdown-menu">
+							<li>
+								<div class="input-group mb-3">
+										<div class="input-group-text">
+											<input class="form-check-input mt-0 " type="checkbox" value="" aria-label="Checkbox for following text input"  onchange="toggleLayer(SchoolHouse_SSURGO_FloodFreq)">
+											<strong style="padding: 10 0 0 10"> Flood Frequency - <i>Dominant Condition </i></strong>
+										</div>
+								</div>
+							</li>
 
-<style media="screen">
-	.offcanvas-body {
-		background: #9d8625;
-	}
-	.offcanvas-header {
-		background: #9d8625;
-	}
-</style>
+								<hr class="dropdown-divider">
+						</ul>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link" >Link</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link disabled">Disabled</a>
+				  </li>
+				</ul> -->
+				<!-- !!!!!!!!!!!!! END TABS WITH DROPDOWNS - WORKING ON 2023-02-04!!!!!!!!!!!!!!!!!!!!!! -->
+
+
 
 <!-- START SIDEBAR !!!!!!!!!! HIDDEN IN OPEN PAGE -->
 	<div class="wholeOffcanvas">
@@ -197,16 +250,28 @@ crossorigin=""/>
 
 <!-- !!!!!!!!!!PRIMARY DropDown Start !!!!!!!!!! -->
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" onClick='goToLayer(primary_SSURGO_WGS84_floodFreqMax)'role="button" data-bs-toggle="dropdown" aria-expanded="false"> Primary Spruce Pine Facility  </a>
+								<a class="nav-link dropdown-toggle" href="#" onClick='goToLayer(primaryFacility)'role="button" data-bs-toggle="dropdown" aria-expanded="false"> Primary Spruce Pine Facility  </a>
 									<ul class="dropdown-menu">
-										<li>  <input class="form-check-input mt-0"  id="primary_floodfreq_checkbox"  type="checkbox" value="" onchange="toggleLayer(primary_SSURGO_WGS84_floodFreqMax)" aria-label="Checkbox for following text input" checked/>
-											<label class="form-check-label" for="primary_floodfreq_checkbox"> Flood Frequency - <i>Max Condition </i></li>
+											<li>
+												<div class="input-group mb-3">
+												  	<div class="input-group-text">
+												    	<input class="form-check-input mt-0 " type="checkbox" role="switch" value="" aria-label="Checkbox for following text input"  onchange="toggleLayer(primary_SSURGO_WGS84_floodFreqMax)">
+															<strong> Flood Frequency - <i>Max Condition </i></strong>
+												  	</div>
+												</div>
+											</li>
+											<hr class="dropdown-divider">
+											<li>
+												<div class="input-group mb-3">
+														<div class="input-group-text">
+															<input class="form-check-input mt-0 " type="checkbox" role="switch" value="" aria-label="Checkbox for following text input"  onchange="toggleLayer(primary_SSURGO_ErosionHazard)">
+															<strong> Erosion Hazard</strong>
+														</div>
+												</div>
+											</li>
+											<hr class="dropdown-divider">
 
-												<hr class="dropdown-divider">
 											<!-- !!!!!!!!!!	START NEW DROPDOWN ITEM HERE !!!!!!!!!! -->
-
-
-
 										</ul>
 								</li>
 <!-- !!!!!!!!!!PRIMARY DropDown END !!!!!!!!!! -->
@@ -215,13 +280,24 @@ crossorigin=""/>
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="#" onClick="goToLayer(SchoolHouse_SSURGO_FloodFreq)" role="button" data-bs-toggle="dropdown" aria-expanded="false"> SchoolHouse - <i> Harris Mining Company Rd. </i>  </a>
 									<ul class="dropdown-menu">
-										<li>  <input class="form-check-input mt-0" id="schoolhouse_floodfreq_checkbox" type="checkbox" value="" onchange="toggleLayer(SchoolHouse_SSURGO_FloodFreq)" aria-label="Checkbox for following text input" checked/>
-											<label class="form-check-label" for="schoolhouse_floodfreq_checkbox"> Flood Frequency - <i>Dominant Condition </i></li>
+										<!-- <li>
+											<input class="form-check-input mt-0" id="schoolhouse_floodfreq_checkbox" type="checkbox" value="" onchange="toggleLayer(SchoolHouse_SSURGO_FloodFreq)" aria-label="Checkbox for following text input" checked>
+											<label class="form-check-label" for="schoolhouse_floodfreq_checkbox"> Flood Frequency - <i>Dominant Condition </i></label>
+										</li> -->
+											<li>
+												<div class="input-group mb-3">
+														<div class="input-group-text">
+															<input class="form-check-input mt-0 " type="checkbox" value="" aria-label="Checkbox for following text input"  onchange="toggleLayer(SchoolHouse_SSURGO_FloodFreq)">
+															<strong style="padding: 10 0 0 10"> Flood Frequency - <i>Dominant Condition </i></strong>
+														</div>
+												</div>
+											</li>
+
 
 											<hr class="dropdown-divider">
 									<!-- !!!!!!!!!!	START NEW DROPDOWN ITEM HERE !!!!!!!!!! -->
 
-					</ul>
+									</ul>
 								</li>
 <!-- !!!!!!!!!!SCHOOLHOUSE DropDown END !!!!!!!!!! -->
 
@@ -233,15 +309,17 @@ crossorigin=""/>
                 <a class="nav-link dropdown-toggle" href="#" onClick='goToLayer(Crystal_SSURGO_FloodFreq)' role="button" data-bs-toggle="dropdown" aria-expanded="false"> 136 Crystal Dr.  </a>
                   <ul class="dropdown-menu">
 
-											<li>  <input class="form-check-input mt-0" id="crystal_floodfreq_checkbox" checked type="checkbox" value="" onchange="toggleLayer(Crystal_SSURGO_FloodFreq)" aria-label="Checkbox for following text input">
-												<label class="form-check-label" for="crystal_floodfreq_checkbox"> Flood Frequency - <i>Dominant Condition </i></li>
-													</li>
+											<li>  <input class="form-check-input mt-0" id="crystal_floodfreq_checkbox" type="checkbox" value="" onchange="toggleLayer(Crystal_SSURGO_FloodFreq)" aria-label="Checkbox for following text input" checked>
+												<label class="form-check-label" for="crystal_floodfreq_checkbox"> Flood Frequency - <i>Dominant Condition </i>
+
+											</li>
+
+																											<!-- Frustrated, cant get the check boxes to stay checked no matter what  -->
+
                       <hr class="dropdown-divider">
-
 										<!-- !!!!!!!!!!	START NEW DROPDOWN ITEM HERE !!!!!!!!!! -->
-
-                    </ul>
-                </li>
+                </ul>
+            	</li>
 <!-- !!!!!!!!!!CRYSTAL DropDown END !!!!!!!!!! -->
 
 					<hr class="nav-divider">
@@ -256,9 +334,16 @@ crossorigin=""/>
 	</div>
 <!-- !!!!!!!!!!!!!!!!!! END OFF CANVAS BODY // END HIDDEN SIDEBAR -->
 
+
+
 </nav>
+
+
+
+
+
 <!-- end nav bar, includes title and buttons -->
-<!-- start table header -->
+<!-- start table header - NOT USED. PART OF SEC CAM FRAMEWORK-->
 	<div class="tablesCollapse">
 	<div class="row">
 		<div class="col">
@@ -347,7 +432,7 @@ className: 'xIconBlue',
 //!!!!!!!!!!!!!!!!!!!!HELPER FUNCTIONS!!!!!!!!!!!!!!!!!!!!!!!
 
 function goToLayer(layer){
-	map.setZoom(15);
+	map.setZoom(14);
 	try {
 			map.flyTo(layer.getLatLng());
 		} catch {
@@ -369,8 +454,8 @@ function goToLayer(layer){
  function primary_FloodFreqStyle(feature){
 			 return {
 				 fillColor: primary_FloodFreqScale(feature.properties.flodfreqma),
-				 fillOpacity: 1,
-				 color: 'rgba(1,1,1,0)',
+				 fillOpacity: .9,
+				 color: 'rgba(1,1,1,0)', // transparent color with the alpha layer
 			 }
 	 };
  // set corresponding properties values for the flodfreqcd value of the SSURGO lAYERS
@@ -393,8 +478,31 @@ function floodFreq_style(feature){
             dashArray: '2'
    };
   };
+	// above styling corresponds to SSURGO soils data, yanking the flood frequency in a gradient around the site.
 
-// above styling corresponds to SSURGO soils data, yanking the flood frequency in a gradient around the site.
+
+	// erosion hazard style handle
+	var greenToRed = chroma.scale(['#00ff00','#ff0000']).colors(6);
+	function erosionHazardScale(val){
+		var id = 0
+		// slight , sever, moderate, not rated , other.
+		if(val == 'Not rated'){id = 6}
+		else if(val == "Slight"){id = 1}
+		else if(val ==  "Moderate"){id = 1}
+		else if(val == "Severe"){id =5}
+		return greenToRed[id];
+	};
+
+	function erosionHazardStyle(feature){
+		return {
+			fillColor: erosionHazardScale(feature.properties.forpehrtdc),
+			// fillColor: '#724700',
+			fillOpacity: .8,
+			// color: rgba(1,1,1,0),// wow so dont set the color to alpha for this becasue nothing shows up
+			// color: erosionHazardStyle(feature.properties.forpehrtdc),
+			color: 'rgba(1,1,1,0)'
+		};
+	};
 
 
 // !!!!!!!!!!!!!!!!!!!! BASE LAYERS !!!!!!!!!!!!!!!!!!!!
@@ -460,6 +568,30 @@ var ncCountyShape = new L.GeoJSON.AJAX('assets/NCDOT_County_Boundaries_Spat.geoj
 
  }).addTo(map);
 
+
+
+
+// primary_SSURGO with labels
+
+var primary_SSURGO_ErosionHazard = new L.GeoJSON.AJAX('assets/primary_SSURGO_WGS84.geojson',{
+	onEachFeature: function popUp(feature, layer){
+			// show polygon group type
+			layer.bindTooltip(feature.properties.muname)
+				// popup with whole ssurgo table
+			 var out = [];
+			 if (feature.properties){
+					 for(key in feature.properties){
+							 out.push(key+": "+feature.properties[key]);
+					 }
+					 layer.bindPopup(out.join("<br />"),{autoPan: false});
+			 };
+	 },
+	// fillOpacity: 0.2,
+	// opacity: .2,
+	// dashArray:'4',
+	style: erosionHazardStyle,
+
+}).addTo(map);
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! END SIBELCO PRIMARY LAYERS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
